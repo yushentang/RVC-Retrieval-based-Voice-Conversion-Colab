@@ -24,6 +24,9 @@ import soundfile as sf
 import torch
 import torch.nn.functional as F
 
+torch.serialization.add_safe_globals([fairseq.data.dictionary.Dictionary])
+fairseq.checkpoint_utils.load_model_ensemble_and_task
+
 if "privateuseone" not in device:
     device = "cpu"
     if torch.cuda.is_available():
