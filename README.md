@@ -1,9 +1,12 @@
 # RVC (基于检索的语音转换) Colab 项目
 
-本项目提供了一个 Google Colab 笔记本，用于体验 RVC (Retrieval-based Voice Conversion / 基于检索的语音转换) 技术。它基于 `yushentang` 的工作成果，让用户无需本地高性能 GPU 配置即可轻松训练自己的声音模型并进行语音转换。
+本项目提供了一个 Google Colab 笔记本，用于体验 RVC (Retrieval-based Voice Conversion / 基于检索的语音转换) 技术。它使得用户无需本地高性能 GPU 配置即可轻松训练自己的声音模型并进行语音转换。
 
-**原始仓库链接:** [yushentang/RVC-Retrieval-based-Voice-Conversion-Colab](https://github.com/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab)
-**Colab 笔记本直达链接:** [RVC_For_Colab.ipynb](https://colab.research.google.com/github/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab/blob/main/RVC_For_Colab.ipynb)
+**此 Colab 笔记本特别针对 Google Colab 最新的 Python 3.11 环境进行了全面适配，并修复了原始 RVC 项目中的一些已知 bug，旨在提供更流畅稳定的用户体验。**
+
+**核心原始项目链接:** [RVC-Project/Retrieval-based-Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)
+**Colab 笔记本直达链接 :**
+[![在 Colab 中打开](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab/blob/main/RVC_For_Colab.ipynb)
 
 ## 目录
 1.  [项目概览](#项目概览)
@@ -23,11 +26,13 @@
 
 ## 项目概览
 
-基于检索的语音转换 (RVC) 是一种深度学习技术，它可以将一段音频中的语音转换为另一个目标语音，同时保留原始内容和韵律。此 Colab 笔记本通过提供一个预配置的运行环境、所有必要的依赖项以及结构化的工作流程，简化了整个过程。
+基于检索的语音转换 (RVC) 是一种深度学习技术，它可以将一段音频中的语音转换为另一个目标语音，同时保留原始内容和韵律。此 Colab 笔记本简化了整个过程，提供一个预配置的运行环境、所有必要的依赖项以及结构化的工作流程。**本Colab特别适配了Google Colab最新的Python 3.11环境，并修复了原项目的一些bug，提升了兼容性和稳定性。**
 
 ## 主要功能
 
 * **易于使用:** 直接在 Google Colab 中运行，无需本地复杂配置。
+* **完全适配最新的 Colab Python 3.11 环境。** (May.17.2025)
+* **修复了原始项目中的部分 Bug，提升稳定性。**
 * **RVC 模型训练:** 使用您自己的音频数据集训练定制化的声音模型。
 * **语音推理:** 使用您训练好的模型或预训练模型，将一段语音转换为另一种声音。
 * **数据集管理:** 包含用于准备和上传音频数据集的工具和步骤。
@@ -45,8 +50,7 @@
 
 ### 打开 Colab 笔记本
 
-1.  点击以下链接，在 Google Colab 中直接打开笔记本：
-    [打开 RVC_For_Colab.ipynb](https://colab.research.google.com/github/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab/blob/main/RVC_For_Colab.ipynb)
+1.  点击上方的 [![在 Colab 中打开](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab/blob/main/RVC_For_Colab.ipynb) ，在 Google Colab 中直接打开笔记本。
 2.  强烈建议您将笔记本副本保存到自己的 Google Drive (`文件 > 在云端硬盘中保存副本`)，以便保存您的更改和输出。
 
 ### 环境配置
@@ -54,7 +58,7 @@
 * 笔记本开头的单元格通常会执行以下操作：
     * 连接到 GPU 运行时 (请确保已启用：`代码执行程序 > 更改运行时类型 > 硬件加速器 > GPU`)。
     * 克隆 RVC 仓库。
-    * 安装必要的 Python 包和依赖项。
+    * 安装必要的 Python 包和依赖项 (已针对 Python 3.11 环境优化)。
 * 按顺序运行这些单元格，可以点击每个单元格旁边的“播放”按钮，或使用 `Shift + Enter` 快捷键。
 
 ### 准备数据集
@@ -63,12 +67,14 @@
     * 将您的音频数据（例如，包含 `.wav` 文件的文件夹）创建一个 zip 压缩文件。
     * 将 zip 文件上传到您的 Google Drive 或直接上传到 Colab 环境。
     * 在笔记本中指定数据集的路径。
-* 遵循数据集预处理的说明，可能包括音频重采样、VAD (人声活动检测) 和切分等步骤。
+* 遵循数据集预处理的说明，音频切分，音高特征处理等。
+
+
 
 ### 训练模型
 
-1.  **配置参数:**
-    * 设置项目名称或模型名称。
+1.  **配置参数:**（手动）当Colab禁止使用Web代码时考虑使用
+    * Set the project name or model name.
     * 指定您准备好的数据集的路径。
     * 调整训练参数，如 `epoch` (训练轮数)、`batch_size` (批处理大小)、`sample_rate` (采样率)、`f0method` (基频提取算法，例如 `pm`, `harvest`, `crepe`, `rmvpe`)。
     * 选择是从头开始训练还是微调一个预训练模型。
@@ -95,7 +101,7 @@
 
 ## 重要提示
 
-* **Colab GPU 限制:** Google Colab 免费提供 GPU 资源，但有使用时长限制。长时间的训练任务可能会被中断。Colab Pro/Pro+ 提供更稳定和更长的运行时。
+* **Colab GPU 限制:** Google Colab 免费提供 GPU 资源，但有使用时长限制以及Web代码的限制使用。长时间的训练任务可能会被中断。Colab Pro/Pro+ 提供更稳定和更长的运行时与Web运行的权限。
 * **数据存储:** 直接上传到 Colab 环境的文件是临时的，当运行时断开连接时将被删除。务必将重要数据 (数据集、训练好的模型、结果) 保存到您的 Google Drive。
 * **数据集质量:** 您训练的声音模型的质量在很大程度上取决于训练音频数据的质量和数量。请使用清晰、无噪音的录音。
 * **参数调优:** 实现高质量的语音转换通常需要尝试不同的训练参数、f0 提取方法和数据集大小。
@@ -106,7 +112,8 @@
 * **"GPU 不可用" 或 "已断开连接":**
     * 确保您已选择 GPU 运行时 (`代码执行程序 > 更改运行时类型`)。
     * 您可能已达到 Colab 的使用限制。请稍后再试或考虑升级到 Colab Pro/Pro+。
-* **依赖安装过程中出错:**
+* **依赖安装过程中出错 (尤其是在非 Python 3.11 环境):**
+    * **确保您的 Colab 运行时为 Python 3.11。** 此笔记本针对该版本进行了优化。
     * 重启运行时 (`代码执行程序 > 重新启动代码执行程序`)，然后再次尝试运行安装单元格。
     * 查看错误消息以了解具体的库冲突信息。
 * **输出音频质量不佳:**
@@ -119,14 +126,11 @@
 
 ## 致谢
 
-* 此 Colab 笔记本基于 RVC 项目及其贡献者们的工作。
-* 感谢 `yushentang` 使此 Colab 版本易于访问。
-* 感谢 RVC 模型及相关技术的开发者和研究人员。
+* 本项目 Colab 笔记本的实现主要基于 `RVC-Project/Retrieval-based-Voice-Conversion-WebUI` 项目。
+* 感谢所有 RVC 社区的开发者和研究人员。
 
 ## 许可证
 
-请参阅原始 `yushentang/RVC-Retrieval-based-Voice-Conversion-Colab` 仓库中的许可证信息。通常，开源人工智能项目会使用如 MIT 或 Apache 2.0 等宽松许可证，但最好还是查阅源仓库以获取确切信息。
+请参阅核心原始项目 `RVC-Project/Retrieval-based-Voice-Conversion-WebUI` 仓库中的许可证信息。通常，开源人工智能项目会使用如 MIT 或 Apache 2.0 等宽松许可证，但最好还是查阅源仓库以获取确切信息。
 
 ---
-
-请记住，如果需要，可以替换任何占位符文本，并确保链接与您正在使用的笔记本的特定版本保持最新。
