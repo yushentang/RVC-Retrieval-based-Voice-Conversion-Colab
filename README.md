@@ -131,6 +131,6 @@
 
 ## 许可证
 
-请参阅核心原始项目 `RVC-Project/Retrieval-based-Voice-Conversion-WebUI` 仓库中的许可证信息。通常，开源人工智能项目会使用如 MIT 或 Apache 2.0 等宽松许可证，但最好还是查阅源仓库以获取确切信息。
+请参阅核心原始项目 `RVC-Project/Retrieval-based-Voice-Conversion-WebUI` 仓库中的许可证信息。
 
 ---
