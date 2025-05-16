@@ -1,213 +1,132 @@
-<div align="center">
+# RVC (基于检索的语音转换) Colab 项目
 
-<h1>Retrieval-based-Voice-Conversion-WebUI</h1>
-一个基于VITS的简单易用的变声框架<br><br>
+本项目提供了一个 Google Colab 笔记本，用于体验 RVC (Retrieval-based Voice Conversion / 基于检索的语音转换) 技术。它基于 `yushentang` 的工作成果，让用户无需本地高性能 GPU 配置即可轻松训练自己的声音模型并进行语音转换。
 
-[![madewithlove](https://img.shields.io/badge/made_with-%E2%9D%A4-red?style=for-the-badge&labelColor=orange
-)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)
+**原始仓库链接:** [yushentang/RVC-Retrieval-based-Voice-Conversion-Colab](https://github.com/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab)
+**Colab 笔记本直达链接:** [RVC_For_Colab.ipynb](https://colab.research.google.com/github/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab/blob/main/RVC_For_Colab.ipynb)
 
-<img src="https://counter.seku.su/cmoe?name=rvc&theme=r34" /><br>
+## 目录
+1.  [项目概览](#项目概览)
+2.  [主要功能](#主要功能)
+3.  [环境要求](#环境要求)
+4.  [使用方法](#使用方法)
+    * [打开 Colab 笔记本](#打开-colab-笔记本)
+    * [环境配置](#环境配置)
+    * [准备数据集](#准备数据集)
+    * [训练模型](#训练模型)
+    * [进行推理 (语音转换)](#进行推理-语音转换)
+    * [下载结果](#下载结果)
+5.  [重要提示](#重要提示)
+6.  [问题排查](#问题排查)
+7.  [致谢](#致谢)
+8.  [许可证](#许可证)
 
-[![Open In Colab](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/Retrieval_based_Voice_Conversion_WebUI.ipynb)
-[![Licence](https://img.shields.io/badge/LICENSE-MIT-green.svg?style=for-the-badge)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/LICENSE)
-[![Huggingface](https://img.shields.io/badge/🤗%20-Spaces-yellow.svg?style=for-the-badge)](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main/)
+## 项目概览
 
-[![Discord](https://img.shields.io/badge/RVC%20Developers-Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/HcsmBBGyVk)
+基于检索的语音转换 (RVC) 是一种深度学习技术，它可以将一段音频中的语音转换为另一个目标语音，同时保留原始内容和韵律。此 Colab 笔记本通过提供一个预配置的运行环境、所有必要的依赖项以及结构化的工作流程，简化了整个过程。
 
-[**更新日志**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/Changelog_CN.md) | [**常见问题解答**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94) | [**AutoDL·5毛钱训练AI歌手**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/Autodl%E8%AE%AD%E7%BB%83RVC%C2%B7AI%E6%AD%8C%E6%89%8B%E6%95%99%E7%A8%8B) | [**对照实验记录**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/Autodl%E8%AE%AD%E7%BB%83RVC%C2%B7AI%E6%AD%8C%E6%89%8B%E6%95%99%E7%A8%8B](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/%E5%AF%B9%E7%85%A7%E5%AE%9E%E9%AA%8C%C2%B7%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95)) | [**在线演示**](https://modelscope.cn/studios/FlowerCry/RVCv2demo)
+## 主要功能
 
-[**English**](./docs/en/README.en.md) | [**中文简体**](./README.md) | [**日本語**](./docs/jp/README.ja.md) | [**한국어**](./docs/kr/README.ko.md) ([**韓國語**](./docs/kr/README.ko.han.md)) | [**Français**](./docs/fr/README.fr.md) | [**Türkçe**](./docs/tr/README.tr.md) | [**Português**](./docs/pt/README.pt.md)
+* **易于使用:** 直接在 Google Colab 中运行，无需本地复杂配置。
+* **RVC 模型训练:** 使用您自己的音频数据集训练定制化的声音模型。
+* **语音推理:** 使用您训练好的模型或预训练模型，将一段语音转换为另一种声音。
+* **数据集管理:** 包含用于准备和上传音频数据集的工具和步骤。
+* **Google Drive 集成:** 方便地从您的 Google Drive 保存和加载模型及数据集。
 
-</div>
+## 环境要求
 
-> 底模使用接近50小时的开源高质量VCTK训练集训练，无版权方面的顾虑，请大家放心使用
+* 一个 **Google 账号** (用于使用 Google Colab 和 Google Drive)。
+* **音频数据集:**
+    * **训练新模型所需:** 您需要一个包含目标声音的清晰、高质量的音频录音数据集 (例如，至少10-30分钟的纯净人声，越多越好，背景噪音尽可能小)。
+    * 音频文件通常应为 `.wav` 格式。
+* 对 Google Colab 笔记本的基本操作有所了解 (例如如何运行单元格、管理文件等)。
 
-> 请期待RVCv3的底模，参数更大，数据更大，效果更好，基本持平的推理速度，需要训练数据量更少。
+## 使用方法
 
-<table>
-   <tr>
-		<td align="center">训练推理界面</td>
-		<td align="center">实时变声界面</td>
-	</tr>
-  <tr>
-		<td align="center"><img src="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/assets/129054828/092e5c12-0d49-4168-a590-0b0ef6a4f630"></td>
-    <td align="center"><img src="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/assets/129054828/730b4114-8805-44a1-ab1a-04668f3c30a6"></td>
-	</tr>
-	<tr>
-		<td align="center">go-web.bat</td>
-		<td align="center">go-realtime-gui.bat</td>
-	</tr>
-  <tr>
-    <td align="center">可以自由选择想要执行的操作。</td>
-		<td align="center">我们已经实现端到端170ms延迟。如使用ASIO输入输出设备，已能实现端到端90ms延迟，但非常依赖硬件驱动支持。</td>
-	</tr>
-</table>
+### 打开 Colab 笔记本
 
-## 简介
-本仓库具有以下特点
-+ 使用top1检索替换输入源特征为训练集特征来杜绝音色泄漏
-+ 即便在相对较差的显卡上也能快速训练
-+ 使用少量数据进行训练也能得到较好结果(推荐至少收集10分钟低底噪语音数据)
-+ 可以通过模型融合来改变音色(借助ckpt处理选项卡中的ckpt-merge)
-+ 简单易用的网页界面
-+ 可调用UVR5模型来快速分离人声和伴奏
-+ 使用最先进的[人声音高提取算法InterSpeech2023-RMVPE](#参考项目)根绝哑音问题。效果最好（显著地）但比crepe_full更快、资源占用更小
-+ A卡I卡加速支持
+1.  点击以下链接，在 Google Colab 中直接打开笔记本：
+    [打开 RVC_For_Colab.ipynb](https://colab.research.google.com/github/yushentang/RVC-Retrieval-based-Voice-Conversion-Colab/blob/main/RVC_For_Colab.ipynb)
+2.  强烈建议您将笔记本副本保存到自己的 Google Drive (`文件 > 在云端硬盘中保存副本`)，以便保存您的更改和输出。
 
-点此查看我们的[演示视频](https://www.bilibili.com/video/BV1pm4y1z7Gm/) !
+### 环境配置
 
-## 环境配置
-以下指令需在 Python 版本大于3.8的环境中执行。  
+* 笔记本开头的单元格通常会执行以下操作：
+    * 连接到 GPU 运行时 (请确保已启用：`代码执行程序 > 更改运行时类型 > 硬件加速器 > GPU`)。
+    * 克隆 RVC 仓库。
+    * 安装必要的 Python 包和依赖项。
+* 按顺序运行这些单元格，可以点击每个单元格旁边的“播放”按钮，或使用 `Shift + Enter` 快捷键。
 
-### Windows/Linux/MacOS等平台通用方法
-下列方法任选其一。
-#### 1. 通过 pip 安装依赖
-1. 安装Pytorch及其核心依赖，若已安装则跳过。参考自: https://pytorch.org/get-started/locally/
-```bash
-pip install torch torchvision torchaudio
-```
-2. 如果是 win 系统 + Nvidia Ampere 架构(RTX30xx)，根据 #21 的经验，需要指定 pytorch 对应的 cuda 版本
-```bash
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
-```
-3. 根据自己的显卡安装对应依赖
-- N卡
-```bash
-pip install -r requirements.txt
-```
-- A卡/I卡
-```bash
-pip install -r requirements-dml.txt
-```
-- A卡ROCM(Linux)
-```bash
-pip install -r requirements-amd.txt
-```
-- I卡IPEX(Linux)
-```bash
-pip install -r requirements-ipex.txt
-```
+### 准备数据集
 
-#### 2. 通过 poetry 来安装依赖
-安装 Poetry 依赖管理工具，若已安装则跳过。参考自: https://python-poetry.org/docs/#installation
-```bash
-curl -sSL https://install.python-poetry.org | python3 -
-```
+* 笔记本会指导您如何上传数据集。通常包括：
+    * 将您的音频数据（例如，包含 `.wav` 文件的文件夹）创建一个 zip 压缩文件。
+    * 将 zip 文件上传到您的 Google Drive 或直接上传到 Colab 环境。
+    * 在笔记本中指定数据集的路径。
+* 遵循数据集预处理的说明，可能包括音频重采样、VAD (人声活动检测) 和切分等步骤。
 
-通过 Poetry 安装依赖时，python 建议使用 3.7-3.10 版本，其余版本在安装 llvmlite==0.39.0 时会出现冲突
-```bash
-poetry init -n
-poetry env use "path to your python.exe"
-poetry run pip install -r requirments.txt
-```
+### 训练模型
 
-### MacOS
-可以通过 `run.sh` 来安装依赖
-```bash
-sh ./run.sh
-```
+1.  **配置参数:**
+    * 设置项目名称或模型名称。
+    * 指定您准备好的数据集的路径。
+    * 调整训练参数，如 `epoch` (训练轮数)、`batch_size` (批处理大小)、`sample_rate` (采样率)、`f0method` (基频提取算法，例如 `pm`, `harvest`, `crepe`, `rmvpe`)。
+    * 选择是从头开始训练还是微调一个预训练模型。
+2.  **开始训练:** 运行训练相关的单元格。此过程可能需要较长时间，具体取决于数据集大小和 `epoch` 数量。
+3.  **监控过程:** 监控训练进度。笔记本可能会输出日志、损失值，并定期保存模型检查点。
+    * 模型检查点 (例如 `.pth` 文件) 和索引文件 (例如 `.index` 文件) 通常会保存到指定目录，一般在您的 Google Drive 中。
 
-## 其他预模型准备
-RVC需要其他一些预模型来推理和训练。
+### 进行推理 (语音转换)
 
-你可以从我们的[Hugging Face space](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main/)下载到这些模型。
+1.  **加载模型:**
+    * 指定您训练好的模型文件 (`.pth` 文件) 及其对应的索引文件 (`.index` 文件，如果使用的话) 的路径。
+    * 如果使用预训练模型，请确保已下载并可访问。
+2.  **输入音频:**
+    * 上传您想要转换的音频文件 (源音频)。
+    * 指定此输入音频文件的路径。
+3.  **转换设置:**
+    * 调整推理参数，如音高变换 (`transpose`)、索引率 (`index_rate`，用于特征检索) 以及与训练时不同的 f0 提取方法等。
+4.  **运行推理:** 执行推理单元格。输出将是经过语音转换的音频文件。
 
-### 1. 下载 assets
-以下是一份清单，包括了所有RVC所需的预模型和其他文件的名称。你可以在`tools`文件夹找到下载它们的脚本。
+### 下载结果
 
-- ./assets/hubert/hubert_base.pt
+* **转换后的音频:** 笔记本会提供下载生成的音频文件的方法，通常是将其保存到 Colab 的临时存储或直接保存到您的 Google Drive。
+* **训练好的模型:** 确保您的模型文件 (`.pth`, `.index`) 已保存到 Google Drive 以备将来使用，或将其下载到您的本地计算机。
 
-- ./assets/pretrained 
+## 重要提示
 
-- ./assets/uvr5_weights
+* **Colab GPU 限制:** Google Colab 免费提供 GPU 资源，但有使用时长限制。长时间的训练任务可能会被中断。Colab Pro/Pro+ 提供更稳定和更长的运行时。
+* **数据存储:** 直接上传到 Colab 环境的文件是临时的，当运行时断开连接时将被删除。务必将重要数据 (数据集、训练好的模型、结果) 保存到您的 Google Drive。
+* **数据集质量:** 您训练的声音模型的质量在很大程度上取决于训练音频数据的质量和数量。请使用清晰、无噪音的录音。
+* **参数调优:** 实现高质量的语音转换通常需要尝试不同的训练参数、f0 提取方法和数据集大小。
+* **合乎道德的使用:** 请注意声音克隆技术的伦理影响。未经他人明确同意，请勿将其用于创建误导性内容或冒充他人。
 
-想使用v2版本模型的话，需要额外下载
+## 问题排查
 
-- ./assets/pretrained_v2
+* **"GPU 不可用" 或 "已断开连接":**
+    * 确保您已选择 GPU 运行时 (`代码执行程序 > 更改运行时类型`)。
+    * 您可能已达到 Colab 的使用限制。请稍后再试或考虑升级到 Colab Pro/Pro+。
+* **依赖安装过程中出错:**
+    * 重启运行时 (`代码执行程序 > 重新启动代码执行程序`)，然后再次尝试运行安装单元格。
+    * 查看错误消息以了解具体的库冲突信息。
+* **输出音频质量不佳:**
+    * 改进您的训练数据集 (更多数据、更纯净的音频)。
+    * 尝试不同的 f0 提取方法 (例如，`rmvpe` 或 `crepe` 通常效果较好，但可能较慢)。
+    * 增加训练的 `epoch` 数量。
+    * 调整推理时的 `index_rate` (索引率)。
+* **文件未找到错误:**
+    * 仔细检查您在笔记本中指定的文件路径。确保它们正确指向您在 Google Drive 或 Colab 环境中的文件。
 
-### 2. 安装 ffmpeg
-若ffmpeg和ffprobe已安装则跳过。
+## 致谢
 
-#### Ubuntu/Debian 用户
-```bash
-sudo apt install ffmpeg
-```
-#### MacOS 用户
-```bash
-brew install ffmpeg
-```
-#### Windows 用户
-下载后放置在根目录。
-- 下载[ffmpeg.exe](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/ffmpeg.exe)
+* 此 Colab 笔记本基于 RVC 项目及其贡献者们的工作。
+* 感谢 `yushentang` 使此 Colab 版本易于访问。
+* 感谢 RVC 模型及相关技术的开发者和研究人员。
 
-- 下载[ffprobe.exe](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/ffprobe.exe)
+## 许可证
 
-### 3. 下载 rmvpe 人声音高提取算法所需文件
+请参阅原始 `yushentang/RVC-Retrieval-based-Voice-Conversion-Colab` 仓库中的许可证信息。通常，开源人工智能项目会使用如 MIT 或 Apache 2.0 等宽松许可证，但最好还是查阅源仓库以获取确切信息。
 
-如果你想使用最新的RMVPE人声音高提取算法，则你需要下载音高提取模型参数并放置于RVC根目录。
+---
 
-- 下载[rmvpe.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/rmvpe.pt)
-
-#### 下载 rmvpe 的 dml 环境(可选, A卡/I卡用户)
-
-- 下载[rmvpe.onnx](https://huggingface.co/lj1995/VoiceConversionWebUI/blob/main/rmvpe.onnx)
-
-### 4. AMD显卡Rocm(可选, 仅Linux)
-
-如果你想基于AMD的Rocm技术在Linux系统上运行RVC，请先在[这里](https://rocm.docs.amd.com/en/latest/deploy/linux/os-native/install.html)安装所需的驱动。
-
-若你使用的是Arch Linux，可以使用pacman来安装所需驱动：
-````
-pacman -S rocm-hip-sdk rocm-opencl-sdk
-````
-对于某些型号的显卡，你可能需要额外配置如下的环境变量（如：RX6700XT）：
-````
-export ROCM_PATH=/opt/rocm
-export HSA_OVERRIDE_GFX_VERSION=10.3.0
-````
-同时确保你的当前用户处于`render`与`video`用户组内：
-````
-sudo usermod -aG render $USERNAME
-sudo usermod -aG video $USERNAME
-````
-
-## 开始使用
-### 直接启动
-使用以下指令来启动 WebUI
-```bash
-python infer-web.py
-```
-
-若先前使用 Poetry 安装依赖，则可以通过以下方式启动WebUI
-```bash
-poetry run python infer-web.py
-```
-
-### 使用整合包
-下载并解压`RVC-beta.7z`
-#### Windows 用户
-双击`go-web.bat`
-#### MacOS 用户
-```bash
-sh ./run.sh
-```
-### 对于需要使用IPEX技术的I卡用户(仅Linux)
-```bash
-source /opt/intel/oneapi/setvars.sh
-```
-
-## 参考项目
-+ [ContentVec](https://github.com/auspicious3000/contentvec/)
-+ [VITS](https://github.com/jaywalnut310/vits)
-+ [HIFIGAN](https://github.com/jik876/hifi-gan)
-+ [Gradio](https://github.com/gradio-app/gradio)
-+ [FFmpeg](https://github.com/FFmpeg/FFmpeg)
-+ [Ultimate Vocal Remover](https://github.com/Anjok07/ultimatevocalremovergui)
-+ [audio-slicer](https://github.com/openvpi/audio-slicer)
-+ [Vocal pitch extraction:RMVPE](https://github.com/Dream-High/RMVPE)
-  + The pretrained model is trained and tested by [yxlllc](https://github.com/yxlllc/RMVPE) and [RVC-Boss](https://github.com/RVC-Boss).
-
-## 感谢所有贡献者作出的努力
-<a href="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=RVC-Project/Retrieval-based-Voice-Conversion-WebUI" />
-</a>
+请记住，如果需要，可以替换任何占位符文本，并确保链接与您正在使用的笔记本的特定版本保持最新。
